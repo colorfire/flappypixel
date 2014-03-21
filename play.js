@@ -1,10 +1,10 @@
 var play_state = {
-	// No more 'preload' function, since it is already done in the 'load' state.
+    // No more 'preload' function, since it is already done in the 'load' state.
 
-	create: function() {
-		this.game.input.onDown.add(this.jump, this);
+    create: function() {
+        this.game.input.onDown.add(this.jump, this);
 
-		this.pipes = this.game.add.group();
+        this.pipes = this.game.add.group();
         this.pipes.createMultiple(20, 'pipe');
 
         this.timer = this.game.time.events.loop(1500, this.add_row_of_pipes,
@@ -24,48 +24,48 @@ var play_state = {
 
         this.jump_sound = this.game.add.audio('jump');
         this.hit_sound = this.game.add.audio('hit');
-	}, 
+    }, 
 
-	update: function() {
-		if (this.bird.inWorld == false)
-			this.restart_game();
+    update: function() {
+        if (this.bird.inWorld == false)
+            this.restart_game();
 
-		if (this.bird.angle < 20)
-			this.bird.angle += 1;
+        if (this.bird.angle < 20)
+            this.bird.angle += 1;
 
-		this.game.physics.overlap(this.bird, this.pipes, this.hit_pipe, null,
-			this);
-	},
+        this.game.physics.overlap(this.bird, this.pipes, this.hit_pipe, null,
+            this);
+    },
 
-	jump: function() {
-		if (this.bird.alive == false)
-			return;
+    jump: function() {
+        if (this.bird.alive == false)
+            return;
 
-		this.bird.body.velocity.y = -350;
-		this.game.add.tween(this.bird).to({angle: -20}, 100).start();
-		this.jump_sound.play();
-	},
+        this.bird.body.velocity.y = -350;
+        this.game.add.tween(this.bird).to({angle: -20}, 100).start();
+        this.jump_sound.play();
+    },
 
-	hit_pipe: function() {
-		if (this.bird.alive == false)
-			return;
+    hit_pipe: function() {
+        if (this.bird.alive == false)
+            return;
 
-		this.bird.alive = false;
-		this.game.time.events.remove(this.timer);
+        this.bird.alive = false;
+        this.game.time.events.remove(this.timer);
 
-		this.pipes.forEachAlive(function(p){
-			p.body.velocity.x = 0;
-		}, this);
-		this.hit_sound.play();
-	},
+        this.pipes.forEachAlive(function(p){
+            p.body.velocity.x = 0;
+        }, this);
+        this.hit_sound.play();
+    },
 
-	restart_game: function() {
-		this.game.time.events.remove(this.timer);
-		/// This time we go back to the 'menu' state.
-		this.game.state.start('menu');
-	},
+    restart_game: function() {
+        this.game.time.events.remove(this.timer);
+        /// This time we go back to the 'menu' state.
+        this.game.state.start('menu');
+    },
 
-	// Generate pipe
+    // Generate pipe
     add_one_pipe: function(x, y) {
         // Get the first dead pipe of our group
         var pipe = this.pipes.getFirstDead();
